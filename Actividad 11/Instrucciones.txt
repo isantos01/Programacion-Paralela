@@ -1,0 +1,28 @@
+Instrucciones paso a paso para compilar y ejecutar
+
+Requisitos previos
+
+Sistema Linux (o WSL en Windows / macOS con Homebrew) con una implementación de MPI. En Ubuntu/Debian:
+
+sudo apt update
+sudo apt install -y openmpi-bin libopenmpi-dev
+
+Verificar la instalación con: mpicc --version y mpirun --version.
+
+Compilación y ejecución de la demostración
+
+1.	Colocar el archivo checkpoint_mpi.c en una carpeta de trabajo y abrir una terminal en ella.
+
+2.	Compilar:  mpicc -O2 -o checkpoint_mpi checkpoint_mpi.c
+
+3.	Limpiar cualquier ejecución previa (empezar desde cero):  rm -f checkpoint_rank_*.dat fallo_simulado.flag
+
+4.	Primera ejecución:  mpirun -np 3 ./checkpoint_mpi   — se verán los mensajes [INIT], las iteraciones [CALC], los checkpoints [CKPT] en 0, 5 y 10, y el [FALLO] del proceso 1 en la iteración 12, que termina la ejecución.
+
+5.	Verificar los archivos generados:  ls -l checkpoint_rank_*.dat fallo_simulado.flag   — hay un checkpoint por proceso.
+
+6.	Segunda ejecución (recuperación):  mpirun -np 3 ./checkpoint_mpi   — los tres procesos muestran [REC] con ROLLBACK a la iteración 10, continúan hasta la 20 y el programa imprime SUMA GLOBAL = 5520.0 | CONSISTENTE.
+
+7.	(Opcional) Repetir con más procesos:  mpirun -np 4 ./checkpoint_mpi   (recordar limpiar antes los archivos .dat y .flag; el valor esperado se recalcula automáticamente).
+
+Notas: si se ejecuta como root (por ejemplo, en un contenedor) añadir --allow-run-as-root; si la máquina tiene menos núcleos que procesos, añadir --oversubscribe.
