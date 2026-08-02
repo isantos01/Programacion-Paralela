@@ -23,7 +23,7 @@
  latencia de red y la caida (crash) de nodos descartando sus mensajes.
  Esto evita interbloqueos y modela de forma realista un sistema distribuido.
 
- Autor: [Estudiante]
+ Autor: Ismael De Los Santos
  Ejecucion: python3 raft_simulacion.py
 ===============================================================================
 """
