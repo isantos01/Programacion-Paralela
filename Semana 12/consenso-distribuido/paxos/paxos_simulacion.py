@@ -28,7 +28,7 @@
 
  Un valor queda ELEGIDO (chosen) cuando una MAYORIA de aceptadores lo acepta.
 
- Autor: [Estudiante]
+ Autor: Ismael De Los Santos
  Ejecucion: python3 paxos_simulacion.py
 ===============================================================================
 """
