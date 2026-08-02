@@ -15,11 +15,7 @@ consenso-distribuido/
 │   └── raft_simulacion.py        Prototipo Raft: 5 nodos, elección de líder + replicación de log
 ├── paxos/
 │   └── paxos_simulacion.py       Prototipo Paxos: fases prepare/accept con 5 aceptadores
-├── logs/
-│   ├── raft_log.txt              Log completo de una ejecución de Raft
-│   └── paxos_log.txt             Log completo de una ejecución de Paxos
-└── informe/
-    └── Informe_Consenso_Paxos_Raft.pdf
+
 ```
 
 ---
