@@ -1,0 +1,33 @@
+# Plantilla AWS SAM: despliega la Lambda + API Gateway (endpoint HTTP).
+# Deploy:  sam build && sam deploy --guided
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Microservicio Akka (Actor Model) sobre AWS Lambda
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: java11
+
+Resources:
+  ActorTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: akka-actor-task
+      Handler: com.example.lambda.TaskHandler::handleRequest
+      CodeUri: target/akka-serverless-actors.jar
+      # SnapStart reduce el cold start del JVM (recomendado para Java).
+      SnapStart:
+        ApplyOn: PublishedVersions
+      Events:
+        PostTask:
+          Type: Api
+          Properties:
+            Path: /task
+            Method: post
+
+Outputs:
+  ApiUrl:
+    Description: URL del endpoint HTTP
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/task"
