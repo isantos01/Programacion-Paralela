@@ -1,0 +1,36 @@
+# AWS SAM: expone las funciones GPU/Spark como endpoints HTTP.
+# Deploy:  sam build && sam deploy --guided
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Aplicacion hibrida Big-Data (GPU + Spark + Actores) serverless
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 60
+    MemorySize: 1024
+
+Resources:
+  GpuNormalizeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_gpu.handler
+      CodeUri: .
+      Events:
+        Normalize:
+          Type: Api
+          Properties: { Path: /normalize, Method: post }
+
+  SparkTriggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_spark.handler
+      CodeUri: .
+      Events:
+        Spark:
+          Type: Api
+          Properties: { Path: /spark, Method: post }
+
+Outputs:
+  ApiUrl:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
